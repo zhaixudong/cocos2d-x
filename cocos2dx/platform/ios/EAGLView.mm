@@ -579,7 +579,11 @@ static cocos2d::CCTouch *s_pTouches[MAX_TOUCHES];
 }
 - (UITextRange *)selectedTextRange;
 {
-	return [[[UITextRange alloc] init] autorelease];
+    Class myUITextRange = NSClassFromString(@"UITextRange");
+    if (myUITextRange==nil) {
+        return nil;
+    }
+    return [[[myUITextRange alloc] init] autorelease];
 }
 
 #pragma mark UITextInput - Replacing and Returning Text
