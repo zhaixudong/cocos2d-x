@@ -52,19 +52,21 @@ class CCDictMaker : public CCSAXDelegator
 public:
     CCDictionary<std::string, CCObject*> *m_pRootDict;
     CCDictionary<std::string, CCObject*> *m_pCurDict;
-    std::stack<CCDictionary<std::string, CCObject*>*> m_tDictStack;
+    CCMutableArray<CCObject*> *m_pCurArray;
+	bool m_bCurInArray;
+    std::stack<CCObject*> m_tDictArrayStack;
+	std::stack<bool> m_tIsArrayStack;
+
     std::string m_sCurKey;///< parsed key
     CCSAXState m_tState;
-    bool    m_bInArray;
-    CCMutableArray<CCObject*> *m_pArray;
 
 public:
     CCDictMaker()
 		: m_pRootDict(NULL),
 		  m_pCurDict(NULL),
+		  m_pCurArray(NULL),
           m_tState(SAX_NONE),
-          m_pArray(NULL),
-		  m_bInArray(false)
+		  m_bCurInArray(false)
     {
     }
 
@@ -99,13 +101,27 @@ public:
             }
             else
             {
-                CCAssert(m_pCurDict && !m_sCurKey.empty(), "");
-                m_pCurDict->setObject(pNewDict, m_sCurKey);
-                pNewDict->release();
-                m_sCurKey.clear();
+				if (m_bCurInArray) {
+					CCAssert(m_pCurArray, "");
+					m_pCurArray->addObject(pNewDict);
+					pNewDict->release();
+					m_sCurKey.clear();
+
+				}
+				else {
+					CCAssert(m_pCurDict && !m_sCurKey.empty(), "");
+					m_pCurDict->setObject(pNewDict, m_sCurKey);
+					pNewDict->release();
+					m_sCurKey.clear();
+				}
             }
+
             m_pCurDict = pNewDict;
-            m_tDictStack.push(m_pCurDict);
+			m_pCurArray = NULL;
+			m_bCurInArray = false;
+            m_tDictArrayStack.push(m_pCurDict);
+			m_tIsArrayStack.push(m_bCurInArray);
+
             m_tState = SAX_DICT;
         }
         else if(sName == "key")
@@ -128,8 +144,27 @@ public:
         {
             if (sName == "array")
             {
-                m_bInArray = true;
-                m_pArray = new CCMutableArray<CCObject*>();
+                CCMutableArray<CCObject*>* pNewArray = new CCMutableArray<CCObject*>();
+
+				if (m_bCurInArray) {
+					CCAssert(m_pCurArray, "");
+					m_pCurArray->addObject(pNewArray);
+					//pNewArray->release();
+					m_sCurKey.clear();
+
+				}
+				else {
+					CCAssert(m_pCurDict && !m_sCurKey.empty(), "");
+					m_pCurDict->setObject(pNewArray, m_sCurKey);
+					//pNewArray->release();
+					m_sCurKey.clear();
+				}
+
+				m_pCurDict = NULL;
+				m_pCurArray = pNewArray;
+				m_bCurInArray = true;
+				m_tDictArrayStack.push(m_pCurArray);
+				m_tIsArrayStack.push(m_bCurInArray);
             }
             m_tState = SAX_NONE;
         }
@@ -140,26 +175,49 @@ public:
         std::string sName((char*)name);
         if( sName == "dict" )
         {
-            m_tDictStack.pop();
-            if ( !m_tDictStack.empty() )
+            CCAssert(!m_bCurInArray, "The plist file is wrong!");
+
+            m_tDictArrayStack.pop();
+			m_tIsArrayStack.pop();
+			if ( !m_tDictArrayStack.empty() && !m_tIsArrayStack.empty() )
             {
-                m_pCurDict = (CCDictionary<std::string, CCObject*>*)(m_tDictStack.top());
+				m_bCurInArray = m_tIsArrayStack.top();
+				if (m_bCurInArray) {
+					m_pCurArray = (CCMutableArray<CCObject*>*)(m_tDictArrayStack.top());
+					m_pCurDict = NULL;
+				}
+				else {
+					m_pCurArray = NULL;
+					m_pCurDict = (CCDictionary<std::string, CCObject*>*)(m_tDictArrayStack.top());
+				}
             }
         }
         else if (sName == "array")
         {
-            CCAssert(m_bInArray, "The plist file is wrong!");
-            m_pCurDict->setObject(m_pArray, m_sCurKey);
-            m_pArray->release();
-            m_pArray = NULL;
-            m_bInArray = false;
+            CCAssert(m_bCurInArray, "The plist file is wrong!");
+
+            m_tDictArrayStack.pop();
+			m_tIsArrayStack.pop();
+			if ( !m_tDictArrayStack.empty() && !m_tIsArrayStack.empty() )
+            {
+				m_bCurInArray = m_tIsArrayStack.top();
+				if (m_bCurInArray) {
+					m_pCurArray = (CCMutableArray<CCObject*>*)(m_tDictArrayStack.top());
+					m_pCurDict = NULL;
+				}
+				else {
+					m_pCurArray = NULL;
+					m_pCurDict = (CCDictionary<std::string, CCObject*>*)(m_tDictArrayStack.top());
+				}
+            }
+
         }
         else if (sName == "true")
         {
             CCString *str = new CCString("1");
-            if (m_bInArray)
+            if (m_bCurInArray)
             {
-                m_pArray->addObject(str);
+                m_pCurArray->addObject(str);
             }
             else
             {
@@ -170,9 +228,9 @@ public:
         else if (sName == "false")
         {
             CCString *str = new CCString("0");
-            if (m_bInArray)
+            if (m_bCurInArray)
             {
-                m_pArray->addObject(str);
+                m_pCurArray->addObject(str);
             }
             else
             {
@@ -201,14 +259,13 @@ public:
         case SAX_REAL:
         case SAX_STRING:
             {
-                CCAssert(!m_sCurKey.empty(), "not found key : <integet/real>");
-
-                if (m_bInArray)
+                if (m_bCurInArray)
                 {
-                    m_pArray->addObject(pText);
+					m_pCurArray->addObject(pText);
                 }
                 else
                 {
+	                CCAssert(!m_sCurKey.empty(), "not found key : <integet/real>");
                     m_pCurDict->setObject(pText, m_sCurKey);
                 }
                 break;
