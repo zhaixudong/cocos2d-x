@@ -37,6 +37,8 @@ THE SOFTWARE.
 
 using namespace cocos2d;
 
+static void static_addValueToCCDict(id key, id value, CCDictionary<std::string, CCObject*>* pDict);
+
 static const char *static_ccRemoveHDSuffixFromFile( const char *pszPath)
 {
 #if CC_IS_RETINA_DISPLAY_SUPPORTED
@@ -155,6 +157,27 @@ static void static_addItemToCCArray(id item, CCMutableArray<CCObject*> *pArray)
         
         pArray->addObject(pValue);
         pValue->release();
+        return;
+    }
+
+    if ([item isKindOfClass:[NSArray class]]) {
+        CCMutableArray<CCObject*> *pTmpArray = new CCMutableArray<CCObject*>();
+        for (id tmpItem in item) {
+            static_addItemToCCArray(tmpItem, pTmpArray);
+        }
+        pArray->addObject(pTmpArray);
+        pTmpArray->release();
+        return; 
+    }
+    
+    if ([item isKindOfClass:[NSDictionary class]]) {
+        CCDictionary<std::string, CCObject*>* pSubDict = new CCDictionary<std::string, CCObject*>();
+        for (id subKey in [(NSDictionary*)item allKeys]) {
+            id subValue = [(NSDictionary*)item objectForKey:subKey];
+            static_addValueToCCDict(subKey, subValue, pSubDict);
+        }
+        pArray->addObject(pSubDict);
+        pSubDict->release();
         return;
     }
 }
