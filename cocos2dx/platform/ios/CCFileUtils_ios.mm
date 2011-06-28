@@ -38,6 +38,7 @@ THE SOFTWARE.
 using namespace cocos2d;
 
 static void static_addValueToCCDict(id key, id value, CCDictionary<std::string, CCObject*>* pDict);
+static void static_addItemToCCArray(id item, CCMutableArray<CCObject*> *pArray);
 
 static const char *static_ccRemoveHDSuffixFromFile( const char *pszPath)
 {
@@ -159,25 +160,27 @@ static void static_addItemToCCArray(id item, CCMutableArray<CCObject*> *pArray)
         pValue->release();
         return;
     }
-
-    if ([item isKindOfClass:[NSArray class]]) {
-        CCMutableArray<CCObject*> *pTmpArray = new CCMutableArray<CCObject*>();
-        for (id tmpItem in item) {
-            static_addItemToCCArray(tmpItem, pTmpArray);
+    
+    // add dictionary value into array
+    if ([item isKindOfClass:[NSDictionary class]]) {
+        CCDictionary<std::string, CCObject*>* pDictItem = new CCDictionary<std::string, CCObject*>();
+        for (id subKey in [item allKeys]) {
+            id subValue = [item objectForKey:subKey];
+            static_addValueToCCDict(subKey, subValue, pDictItem);
         }
-        pArray->addObject(pTmpArray);
-        pTmpArray->release();
-        return; 
+        pArray->addObject(pDictItem);
+        pDictItem->release();
+        return;
     }
     
-    if ([item isKindOfClass:[NSDictionary class]]) {
-        CCDictionary<std::string, CCObject*>* pSubDict = new CCDictionary<std::string, CCObject*>();
-        for (id subKey in [(NSDictionary*)item allKeys]) {
-            id subValue = [(NSDictionary*)item objectForKey:subKey];
-            static_addValueToCCDict(subKey, subValue, pSubDict);
+    // add array value into array
+    if ([item isKindOfClass:[NSArray class]]) {
+        CCMutableArray<CCObject*> *pArrayItem = new CCMutableArray<CCObject*>();
+        for (id subItem in item) {
+            static_addItemToCCArray(subItem, pArrayItem);
         }
-        pArray->addObject(pSubDict);
-        pSubDict->release();
+        pArray->addObject(pArrayItem);
+        pArrayItem->release();
         return;
     }
 }

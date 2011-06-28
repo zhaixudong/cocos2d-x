@@ -182,8 +182,8 @@ static LRESULT CALLBACK _WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
 
 CCEGLView::CCEGLView()
 : m_bCaptured(false)
-, m_bOrientationInitVertical(false)
 , m_bOrientationReverted(false)
+, m_bOrientationInitVertical(false)
 , m_pDelegate(NULL)
 , m_pEGL(NULL)
 , m_hWnd(NULL)
@@ -438,6 +438,18 @@ void CCEGLView::setViewPortInPoints(float x, float y, float w, float h)
     {
         float factor = m_fScreenScaleFactor / CC_CONTENT_SCALE_FACTOR();
         glViewport((GLint)(x * factor) + m_rcViewPort.left,
+            (GLint)(y * factor) + m_rcViewPort.top,
+            (GLint)(w * factor),
+            (GLint)(h * factor));
+    }
+}
+
+void CCEGLView::setScissorInPoints(float x, float y, float w, float h)
+{
+    if (m_pEGL)
+    {
+        float factor = m_fScreenScaleFactor / CC_CONTENT_SCALE_FACTOR();
+        glScissor((GLint)(x * factor) + m_rcViewPort.left,
             (GLint)(y * factor) + m_rcViewPort.top,
             (GLint)(w * factor),
             (GLint)(h * factor));

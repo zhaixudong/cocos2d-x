@@ -26,6 +26,7 @@ THE SOFTWARE.
 #include "CCActionInstant.h"
 #include "CCNode.h"
 #include "CCSprite.h"
+#include "CCScriptSupport.h"
 
 namespace cocos2d {
 	//
@@ -57,10 +58,12 @@ namespace cocos2d {
 	}
 	void CCActionInstant::step(ccTime dt)
 	{
+        CC_UNUSED_PARAM(dt);
 		update(1);
 	}
 	void CCActionInstant::update(ccTime time)
 	{
+        CC_UNUSED_PARAM(time);
 		// ignore
 	}
 	CCFiniteTimeAction * CCActionInstant::reverse()
@@ -258,14 +261,35 @@ namespace cocos2d {
 
 	CCCallFunc * CCCallFunc::actionWithTarget(SelectorProtocol* pSelectorTarget, SEL_CallFunc selector)
 	{
-		CCCallFunc* pCallFunc = new CCCallFunc();
-		pCallFunc->autorelease();
-
-		pCallFunc->initWithTarget(pSelectorTarget);
-		pCallFunc->m_pCallFunc = selector;
-
-		return pCallFunc;
+		CCCallFunc *pRet = new CCCallFunc();
+		if(pRet->initWithTarget(pSelectorTarget))
+		{
+			pRet->m_pCallFunc = selector;
+			pRet->autorelease();
+			return pRet;
+		}
+		CC_SAFE_DELETE(pRet);
+		return NULL;
 	}
+
+	CCCallFunc* CCCallFunc::actionWithScriptFuncName(const char* pszFuncName)
+	{
+		CCCallFunc *pRet = new CCCallFunc();
+		if(pRet->initWithScriptFuncName(pszFuncName))
+		{
+			pRet->autorelease();
+			return pRet;
+		}
+		CC_SAFE_DELETE(pRet);
+		return NULL;
+	}
+
+	bool CCCallFunc::initWithScriptFuncName(const char *pszFuncName)
+	{
+		this->m_scriptFuncName = string(pszFuncName);
+		return true;
+	}
+
 	bool CCCallFunc::initWithTarget(SelectorProtocol* pSelectorTarget)
 	{
 		if (pSelectorTarget)
@@ -294,6 +318,7 @@ namespace cocos2d {
 		CCActionInstant::copyWithZone(pZone);
 		pRet->initWithTarget(m_pSelectorTarget);
 		pRet->m_pCallFunc = m_pCallFunc;
+		pRet->m_scriptFuncName = m_scriptFuncName;
 		CC_SAFE_DELETE(pNewZone);
 		return pRet;
 	}
@@ -308,6 +333,11 @@ namespace cocos2d {
 		{
 			(m_pSelectorTarget->*m_pCallFunc)();
 		}
+
+		if (CCScriptEngineManager::sharedScriptEngineManager()->getScriptEngine())
+		{
+			CCScriptEngineManager::sharedScriptEngineManager()->getScriptEngine()->executeCallFunc(m_scriptFuncName.c_str());
+		}
 	}
 	//
 	// CallFuncN
@@ -317,6 +347,12 @@ namespace cocos2d {
 		if(m_pCallFuncN)
 		{
 			(m_pSelectorTarget->*m_pCallFuncN)(m_pTarget);
+		}
+
+		if (CCScriptEngineManager::sharedScriptEngineManager()->getScriptEngine())
+		{
+			CCScriptEngineManager::sharedScriptEngineManager()->getScriptEngine()->executeCallFuncN(m_scriptFuncName.c_str(),
+					                                                                                m_pTarget);
 		}
 	}
 	CCCallFuncN * CCCallFuncN::actionWithTarget(SelectorProtocol* pSelectorTarget, SEL_CallFuncN selector)
@@ -330,6 +366,19 @@ namespace cocos2d {
 		CC_SAFE_DELETE(pRet);
 		return NULL;
 	}
+
+	CCCallFuncN* CCCallFuncN::actionWithScriptFuncName(const char *pszFuncName)
+	{
+		CCCallFuncN *pRet = new CCCallFuncN();
+		if(pRet->initWithScriptFuncName(pszFuncName))
+		{
+			pRet->autorelease();
+			return pRet;
+		}
+		CC_SAFE_DELETE(pRet);
+		return NULL;
+	}
+
 	bool CCCallFuncN::initWithTarget(SelectorProtocol* pSelectorTarget, SEL_CallFuncN selector)
 	{
 		if( CCCallFunc::initWithTarget(pSelectorTarget) ) 
@@ -339,6 +388,7 @@ namespace cocos2d {
 		}
 		return false;
 	}
+
 	CCObject * CCCallFuncN::copyWithZone(CCZone* zone)
 	{
 		CCZone* pNewZone = NULL;
@@ -364,6 +414,19 @@ namespace cocos2d {
 		if (pRet->initWithTarget(pSelectorTarget, selector, d))
 		{
 			pRet->autorelease();
+			return pRet;
+		}
+		CC_SAFE_DELETE(pRet);
+		return NULL;
+	}
+
+	CCCallFuncND* CCCallFuncND::actionWithScriptFuncName(const char* pszFuncName, void *d)
+	{
+		CCCallFuncND* pRet = new CCCallFuncND();
+		if (pRet->initWithScriptFuncName(pszFuncName))
+		{
+			pRet->autorelease();
+			pRet->m_pData = d;
 			return pRet;
 		}
 		CC_SAFE_DELETE(pRet);
@@ -404,6 +467,14 @@ namespace cocos2d {
 		{
 			(m_pSelectorTarget->*m_pCallFuncND)(m_pTarget, m_pData);
 		}
+
+		if (CCScriptEngineManager::sharedScriptEngineManager()->getScriptEngine())
+		{
+			CCScriptEngineManager::sharedScriptEngineManager()->getScriptEngine()->executeCallFuncND(m_scriptFuncName.c_str(), 
+				                                                                                     m_pTarget,
+				                                                                                     m_pData);
+		}
+		
 	}
 	
     //
@@ -425,6 +496,12 @@ namespace cocos2d {
         {
             (m_pSelectorTarget->*m_pCallFuncO)(m_pObject);
         }
+
+		if (CCScriptEngineManager::sharedScriptEngineManager()->getScriptEngine())
+		{
+			CCScriptEngineManager::sharedScriptEngineManager()->getScriptEngine()->executeCallFunc0(m_scriptFuncName.c_str(),
+				                                                                                    m_pObject);
+		}
     }
     CCCallFuncO * CCCallFuncO::actionWithTarget(SelectorProtocol* pSelectorTarget, SEL_CallFuncO selector, CCObject* pObject)
     {
@@ -437,6 +514,19 @@ namespace cocos2d {
         CC_SAFE_DELETE(pRet);
         return NULL;
     }
+
+	CCCallFuncO* CCCallFuncO::actionWithScriptFuncName(const char *pszFuncName)
+	{
+		CCCallFuncO *pRet = new CCCallFuncO();
+		if(pRet->initWithScriptFuncName(pszFuncName))
+		{
+			pRet->autorelease();
+			return pRet;
+		}
+		CC_SAFE_DELETE(pRet);
+		return NULL;
+	}
+
     bool CCCallFuncO::initWithTarget(SelectorProtocol* pSelectorTarget, SEL_CallFuncO selector, CCObject* pObject)
     {
         if( CCCallFunc::initWithTarget(pSelectorTarget) ) 
@@ -465,85 +555,5 @@ namespace cocos2d {
         CC_SAFE_DELETE(pNewZone);
         return pRet;
     }
-
-
-#if NS_BLOCKS_AVAILABLE
-
-#pragma mark CCCallBlock
-
-		@implementation CCCallBlock
-
-		+(id) actionWithBlock:(void(^)())block {
-			return [[[self alloc] initWithBlock:block] autorelease];
-	}
-
-	-(id) initWithBlock:(void(^)())block {
-		if ((self = [super init])) {
-
-			block_ = [block retain];
-		}
-		return self;
-	}
-
-	-(id) copyWithZone: (CCZone*) zone {
-		CCActionInstant *copy = [[[self class] allocWithZone: zone] initWithBlock:block_];
-		return copy;
-	}
-
-	-(void) startWithTarget:(id)aTarget {
-		[super startWithTarget:aTarget];
-		[self execute];
-	}
-
-	-(void) execute {
-		block_();
-	}
-
-	-(void) dealloc {
-		[block_ release];
-		[super dealloc];
-	}
-
-	@end
-
-#pragma mark CCCallBlockN
-
-		@implementation CCCallBlockN
-
-		+(id) actionWithBlock:(void(^)(CCNode *node))block {
-			return [[[self alloc] initWithBlock:block] autorelease];
-	}
-
-	-(id) initWithBlock:(void(^)(CCNode *node))block {
-		if ((self = [super init])) {
-
-			block_ = [block retain];
-		}
-		return self;
-	}
-
-	-(id) copyWithZone: (CCZone*) zone {
-		CCActionInstant *copy = [[[self class] allocWithZone: zone] initWithBlock:block_];
-		return copy;
-	}
-
-	-(void) startWithTarget:(id)aTarget {
-		[super startWithTarget:aTarget];
-		[self execute];
-	}
-
-	-(void) execute {
-		block_(target);
-	}
-
-	-(void) dealloc {
-		[block_ release];
-		[super dealloc];
-	}
-
-	@end
-
-
-#endif // NS_BLOCKS_AVAILABLE
 
 }

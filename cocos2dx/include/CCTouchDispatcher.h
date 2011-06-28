@@ -42,10 +42,10 @@ typedef enum
 
 
 enum {
-	ccTouchBegan,
-	ccTouchMoved,
-	ccTouchEnded,
-	ccTouchCancelled,
+	CCTOUCHBEGAN,
+	CCTOUCHMOVED,
+	CCTOUCHENDED,
+	CCTOUCHCANCELLED,
 	
 	ccTouchMax,
 };
@@ -96,10 +96,11 @@ public:
 	~CCTouchDispatcher();
 	bool init(void);
 	CCTouchDispatcher() 
-		: m_pHandlersToAdd(NULL)
+        : m_pTargetedHandlers(NULL)
+        , m_pStandardHandlers(NULL)
+		, m_pHandlersToAdd(NULL)
 		, m_pHandlersToRemove(NULL)
-		, m_pStandardHandlers(NULL)
-		, m_pTargetedHandlers(NULL)
+		
 	{}
 
 public:

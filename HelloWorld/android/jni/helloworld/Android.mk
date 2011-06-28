@@ -9,8 +9,9 @@ LOCAL_SRC_FILES := main.cpp \
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../../cocos2dx \
                     $(LOCAL_PATH)/../../../../cocos2dx/platform \
                     $(LOCAL_PATH)/../../../../cocos2dx/include \
+                    $(LOCAL_PATH)/../../../../cocos2dx/lua_support \
                     $(LOCAL_PATH)/../../../../CocosDenshion/include \
-                    $(LOCAL_PATH)/../../.. 
+                    $(LOCAL_PATH)/../../..
 
 # it is used for ndk-r4
 # if you build with nkd-r4, uncomment it                    

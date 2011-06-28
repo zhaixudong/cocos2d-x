@@ -142,7 +142,7 @@ namespace cocos2d{
         while (strLeft.length() > 0)        {
             int pos = strLeft.find('\n');
 
-            if (pos != std::string::npos)
+            if (pos != (int)std::string::npos)
             {
                 // the data is more than a line.get one line
                 line = strLeft.substr(0, pos);
@@ -476,7 +476,7 @@ namespace cocos2d{
             
 			kerningAmount = this->kerningAmountForFirst(prev, c);
 
-			ccBMFontDef fontDef = m_pConfiguration->m_pBitmapFontArray[c];
+			const ccBMFontDef& fontDef = m_pConfiguration->m_pBitmapFontArray[c];
 
 			CCRect rect = fontDef.rect;
 

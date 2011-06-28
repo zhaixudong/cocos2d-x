@@ -350,7 +350,7 @@ extern "C"
     void setKeyboardStateJNI(int bOpen)
     {
         TMethodJNI t;
-        jint open = bOpen;
+        //jint open = bOpen;
         if (getMethodID(t
             , "org/cocos2dx/lib/Cocos2dxGLSurfaceView"
             , (bOpen) ? "openIMEKeyboard" : "closeIMEKeyboard"
@@ -374,6 +374,18 @@ extern "C"
     void Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeDeleteBackward(JNIEnv* env, jobject thiz)
     {
         cocos2d::CCIMEDispatcher::sharedDispatcher()->dispatchDeleteBackward();
+    }
+
+    jstring Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeGetContentText()
+    {
+        JNIEnv * env = 0;
+
+        if (gJavaVM->GetEnv((void**)&env, JNI_VERSION_1_4) != JNI_OK || ! env)
+        {
+            return 0;
+        }
+        const char * pszText = cocos2d::CCIMEDispatcher::sharedDispatcher()->getContentText();
+        return env->NewStringUTF(pszText);
     }
 
 	//////////////////////////////////////////////////////////////////////////
@@ -422,4 +434,26 @@ extern "C"
 
 		return ret;
 	}
+
+	//////////////////////////////////////////////////////////////////////////
+    // handle get current language
+    //////////////////////////////////////////////////////////////////////////
+    char* getCurrentLanguageJNI()
+    {
+        TMethodJNI t;
+        char* ret = NULL;
+
+        if (getMethodID(t
+            , "org/cocos2dx/lib/Cocos2dxActivity"
+            , "getCurrentLanguage"
+            , "()Ljava/lang/String;"))
+        {
+            jstring str = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
+			ret = jstringTostring(t.env, str);
+
+			LOGD("language name %s", ret);
+        }
+
+        return ret;
+    }
 }

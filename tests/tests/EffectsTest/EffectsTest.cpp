@@ -276,6 +276,7 @@ class PageTurn3DDemo : public CCPageTurn3D
 public:
 	static CCActionInterval* actionWithDuration(ccTime t)
 	{
+        CCDirector::sharedDirector()->setDepthTest(true);
 		return CCPageTurn3D::actionWithSize(ccg(15,10), t); 
 	}
 };
@@ -289,6 +290,8 @@ public:
 
 CCActionInterval* createEffect(int nIndex, ccTime t)
 {
+
+    CCDirector::sharedDirector()->setDepthTest(false);
 
 	switch(nIndex)
 	{
@@ -329,7 +332,6 @@ CCActionInterval* getAction()
 void EffectTestScene::runThisTest()
 {
     addChild(TextLayer::node());
-	CCDirector::sharedDirector()->setDepthTest(false);
     CCDirector::sharedDirector()->replaceScene(this);
 }
 

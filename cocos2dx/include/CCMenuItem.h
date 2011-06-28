@@ -51,9 +51,9 @@ namespace cocos2d{
 		CC_PROPERTY(bool, m_bIsEnabled, IsEnabled);
 	public:
 		CCMenuItem()
-			: m_pListener(NULL)
-			, m_bIsEnabled(false)
-			, m_bIsSelected(false)
+			: m_bIsSelected(false)
+            , m_bIsEnabled(false)            
+            , m_pListener(NULL)			
 			, m_pfnSelector(NULL)
 		{}
 		virtual ~CCMenuItem(){}
@@ -69,9 +69,14 @@ namespace cocos2d{
 		virtual void selected();
 		/** The item was unselected */
 		virtual void unselected();
+		/** Register a script function, the function is called in activete
+		*  If pszFunctionName is NULL, then unregister it.
+		*/
+		virtual void registerScriptHandler(const char* pszFunctionName);
 	protected:
 		SelectorProtocol*	m_pListener;
 		SEL_MenuHandler		m_pfnSelector;
+		std::string         m_functionName;
 	};
 
 	/** @brief An abstract class for "label" CCMenuItemLabel items 
@@ -248,8 +253,8 @@ namespace cocos2d{
 	public:
 		CCMenuItemToggle()
 			: m_cOpacity(0)
-			, m_pSubItems(NULL)
-			, m_uSelectedIndex(0)
+            , m_uSelectedIndex(0)
+			, m_pSubItems(NULL)			
 		{}
 		virtual ~CCMenuItemToggle();
 		/** creates a menu item from a list of items with a target/selector */

@@ -210,8 +210,9 @@ namespace cocos2d
 		CCSize winSize = CCDirector::sharedDirector()->getWinSizeInPixels();
 
 		glLoadIdentity();
-// 		glViewport((GLsizei)0, (GLsizei)0, (GLsizei)winSize.width, (GLsizei)winSize.height);
-        CCDirector::sharedDirector()->getOpenGLView()->setViewPortInPoints(0, 0, winSize.width, winSize.height);
+
+        // set view port for user FBO, fixed bug #543 #544
+		glViewport((GLsizei)0, (GLsizei)0, (GLsizei)winSize.width, (GLsizei)winSize.height);
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		ccglOrtho(0, winSize.width, 0, winSize.height, -1024, 1024);
@@ -223,8 +224,8 @@ namespace cocos2d
 	{
 		CCSize	winSize = CCDirector::sharedDirector()->getDisplaySizeInPixels();
 
-// 		glViewport(0, 0, (GLsizei)winSize.width, (GLsizei)winSize.height);
-        CCDirector::sharedDirector()->getOpenGLView()->setViewPortInPoints(0, 0, winSize.width, winSize.height);
+        // set view port for user FBO, fixed bug #543 #544
+		glViewport(0, 0, (GLsizei)winSize.width, (GLsizei)winSize.height);
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		gluPerspective(60, (GLfloat)winSize.width/winSize.height, 0.5f, 1500.0f);
@@ -264,6 +265,8 @@ namespace cocos2d
 
 		glBindTexture(GL_TEXTURE_2D, m_pTexture->getName());
 
+        // restore projection for default FBO .fixed bug #543 #544
+        CCDirector::sharedDirector()->setProjection(CCDirector::sharedDirector()->getProjection());
 		blit();
 	}
 
@@ -377,10 +380,10 @@ namespace cocos2d
 				float y1 = y * m_obStep.y;
 				float y2= y1 + m_obStep.y;
 
-				GLushort a = x * (m_sGridSize.y + 1) + y;
-				GLushort b = (x + 1) * (m_sGridSize.y + 1) + y;
-				GLushort c = (x + 1) * (m_sGridSize.y + 1) + (y + 1);
-				GLushort d = x * (m_sGridSize.y + 1) + (y + 1);
+				GLushort a = (GLushort)(x * (m_sGridSize.y + 1) + y);
+				GLushort b = (GLushort)((x + 1) * (m_sGridSize.y + 1) + y);
+				GLushort c = (GLushort)((x + 1) * (m_sGridSize.y + 1) + (y + 1));
+				GLushort d = (GLushort)(x * (m_sGridSize.y + 1) + (y + 1));
 
 				GLushort tempidx[6] = {a, b, d, b, c, d};
 
@@ -587,13 +590,13 @@ namespace cocos2d
 		
 		for (x = 0; x < numQuads; x++)
 		{
-			idxArray[x*6+0] = x * 4 + 0;
-			idxArray[x*6+1] = x * 4 + 1;
-			idxArray[x*6+2] = x * 4 + 2;
+			idxArray[x*6+0] = (GLushort)(x * 4 + 0);
+			idxArray[x*6+1] = (GLushort)(x * 4 + 1);
+			idxArray[x*6+2] = (GLushort)(x * 4 + 2);
 			
-			idxArray[x*6+3] = x * 4 + 1;
-			idxArray[x*6+4] = x * 4 + 2;
-			idxArray[x*6+5] = x * 4 + 3;
+			idxArray[x*6+3] = (GLushort)(x * 4 + 1);
+			idxArray[x*6+4] = (GLushort)(x * 4 + 2);
+			idxArray[x*6+5] = (GLushort)(x * 4 + 3);
 		}
 		
 		memcpy(m_pOriginalVertices, m_pVertices, numQuads * 12 * sizeof(GLfloat));

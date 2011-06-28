@@ -81,7 +81,7 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../../cocos2dx \
                    $(LOCAL_PATH)/../../../.. \
                    $(LOCAL_PATH)/../../.. \
                    $(LOCAL_PATH)/../../../../chipmunk/include/chipmunk \
-                   $(LOCAL_PATH)/../../../../CocosDenshion/include
+                   $(LOCAL_PATH)/../../../../CocosDenshion/include 
                    
 # it is used for ndk-r4
 # if you build with nkd-r4, uncomment it   

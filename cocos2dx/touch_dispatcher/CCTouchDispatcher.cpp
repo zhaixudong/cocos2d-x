@@ -83,10 +83,10 @@ bool CCTouchDispatcher::init(void)
 	m_bToQuit = false;
 	m_bLocked = false;
 
-	m_sHandlerHelperData[ccTouchBegan].m_type = ccTouchBegan;
-	m_sHandlerHelperData[ccTouchMoved].m_type = ccTouchMoved;
-	m_sHandlerHelperData[ccTouchEnded].m_type = ccTouchEnded;
-	m_sHandlerHelperData[ccTouchCancelled].m_type = ccTouchCancelled;
+	m_sHandlerHelperData[CCTOUCHBEGAN].m_type = CCTOUCHBEGAN;
+	m_sHandlerHelperData[CCTOUCHMOVED].m_type = CCTOUCHMOVED;
+	m_sHandlerHelperData[CCTOUCHENDED].m_type = CCTOUCHENDED;
+	m_sHandlerHelperData[CCTOUCHCANCELLED].m_type = CCTOUCHCANCELLED;
 
 	return true;
 }
@@ -231,6 +231,8 @@ void CCTouchDispatcher::removeAllDelegates(void)
 
 void CCTouchDispatcher::setPriority(int nPriority, CCTouchDelegate *pDelegate)
 {
+    CC_UNUSED_PARAM(nPriority);
+    CC_UNUSED_PARAM(pDelegate);
 	assert(0);
 }
 
@@ -275,9 +277,10 @@ void CCTouchDispatcher::touches(CCSet *pTouches, CCEvent *pEvent, unsigned int u
                 }
 
 				bool bClaimed = false;
-				if (uIndex == ccTouchBegan)
+				if (uIndex == CCTOUCHBEGAN)
 				{
 					bClaimed = pHandler->getDelegate()->ccTouchBegan(pTouch, pEvent);
+
 					if (bClaimed)
 					{
 						pHandler->getClaimedTouches()->addObject(pTouch);
@@ -290,14 +293,14 @@ void CCTouchDispatcher::touches(CCSet *pTouches, CCEvent *pEvent, unsigned int u
 
 					switch (sHelper.m_type)
 					{
-					case ccTouchMoved:
+					case CCTOUCHMOVED:
 						pHandler->getDelegate()->ccTouchMoved(pTouch, pEvent);
 						break;
-					case ccTouchEnded:
+					case CCTOUCHENDED:
 						pHandler->getDelegate()->ccTouchEnded(pTouch, pEvent);
 						pHandler->getClaimedTouches()->removeObject(pTouch);
 						break;
-					case ccTouchCancelled:
+					case CCTOUCHCANCELLED:
 						pHandler->getDelegate()->ccTouchCancelled(pTouch, pEvent);
 						pHandler->getClaimedTouches()->removeObject(pTouch);
 						break;
@@ -335,16 +338,16 @@ void CCTouchDispatcher::touches(CCSet *pTouches, CCEvent *pEvent, unsigned int u
 
 			switch (sHelper.m_type)
 			{
-			case ccTouchBegan:
+			case CCTOUCHBEGAN:
 				pHandler->getDelegate()->ccTouchesBegan(pMutableTouches, pEvent);
 				break;
-			case ccTouchMoved:
+			case CCTOUCHMOVED:
 				pHandler->getDelegate()->ccTouchesMoved(pMutableTouches, pEvent);
 				break;
-			case ccTouchEnded:
+			case CCTOUCHENDED:
 				pHandler->getDelegate()->ccTouchesEnded(pMutableTouches, pEvent);
 				break;
-			case ccTouchCancelled:
+			case CCTOUCHCANCELLED:
 				pHandler->getDelegate()->ccTouchesCancelled(pMutableTouches, pEvent);
 				break;
 			}
@@ -408,7 +411,7 @@ void CCTouchDispatcher::touchesBegan(CCSet *touches, CCEvent *pEvent)
 {
 	if (m_bDispatchEvents)
 	{
-		this->touches(touches, pEvent, ccTouchBegan);
+		this->touches(touches, pEvent, CCTOUCHBEGAN);
 	}
 }
 
@@ -416,7 +419,7 @@ void CCTouchDispatcher::touchesMoved(CCSet *touches, CCEvent *pEvent)
 {
     if (m_bDispatchEvents)
 	{
-		this->touches(touches, pEvent, ccTouchMoved);
+		this->touches(touches, pEvent, CCTOUCHMOVED);
 	}
 }
 
@@ -424,7 +427,7 @@ void CCTouchDispatcher::touchesEnded(CCSet *touches, CCEvent *pEvent)
 {
     if (m_bDispatchEvents)
 	{
-		this->touches(touches, pEvent, ccTouchEnded);
+		this->touches(touches, pEvent, CCTOUCHENDED);
 	}
 }
 
@@ -432,7 +435,7 @@ void CCTouchDispatcher::touchesCancelled(CCSet *touches, CCEvent *pEvent)
 {
     if (m_bDispatchEvents)
 	{
-		this->touches(touches, pEvent, ccTouchCancelled);
+		this->touches(touches, pEvent, CCTOUCHCANCELLED);
 	}
 }
 }//namespace   cocos2d 

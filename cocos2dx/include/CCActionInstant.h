@@ -26,6 +26,7 @@ THE SOFTWARE.
 #ifndef __CCINSTANT_ACTION_H__
 #define __CCINSTANT_ACTION_H__
 
+#include <string>
 #include "CCAction.h"
 #include "selector_protocol.h"
 
@@ -171,9 +172,10 @@ namespace cocos2d {
 	{
 	public:
 		CCCallFunc()
-			: m_pCallFunc(NULL)
-            , m_pSelectorTarget(NULL)
-		{
+            : m_pSelectorTarget(NULL)
+            , m_pCallFunc(NULL)
+			, m_scriptFuncName("")
+        {
 		}
 		virtual ~CCCallFunc()
 		{
@@ -187,19 +189,26 @@ namespace cocos2d {
 		typedef void (SelectorProtocol::*SEL_CallFunc)();
 		*/
 		static CCCallFunc * actionWithTarget(SelectorProtocol* pSelectorTarget, SEL_CallFunc selector);
+		static CCCallFunc* actionWithScriptFuncName(const char* pszFuncName);
 		/** initializes the action with the callback 
 		
 		typedef void (SelectorProtocol::*SEL_CallFunc)();
 		*/
 		virtual bool initWithTarget(SelectorProtocol* pSelectorTarget);
+		virtual bool initWithScriptFuncName(const char* pszFuncName);
 		/** executes the callback */
 		virtual void execute();
 		//super methods
 		virtual void startWithTarget(CCNode *pTarget);
 		CCObject * copyWithZone(cocos2d::CCZone *pZone);
 
+		void registerScriptFunction(const char* pszFunctionName);
+
 	protected:
 		SelectorProtocol*   m_pSelectorTarget;
+		// the script function name to call back
+		std::string         m_scriptFuncName;
+
 		union
 		{
 			SEL_CallFunc	m_pCallFunc;
@@ -223,6 +232,7 @@ namespace cocos2d {
 		typedef void (SelectorProtocol::*SEL_CallFuncN)(CCNode*);
 		*/
 		static CCCallFuncN * actionWithTarget(SelectorProtocol* pSelectorTarget, SEL_CallFuncN selector);
+		static CCCallFuncN* actionWithScriptFuncName(const char* pszFuncName);
 		/** initializes the action with the callback 
 
 		typedef void (SelectorProtocol::*SEL_CallFuncN)(CCNode*);
@@ -244,6 +254,7 @@ namespace cocos2d {
 
 		/** creates the action with the callback and the data to pass as an argument */
 		static CCCallFuncND * actionWithTarget(SelectorProtocol* pSelectorTarget, SEL_CallFuncND selector, void* d);
+		static CCCallFuncND* actionWithScriptFuncName(const char* pszFuncName, void *d);
 		/** initializes the action with the callback and the data to pass as an argument */
 		virtual bool initWithTarget(SelectorProtocol* pSelectorTarget, SEL_CallFuncND selector, void* d);
 		// super methods
@@ -270,6 +281,7 @@ namespace cocos2d {
         typedef void (SelectorProtocol::*SEL_CallFuncO)(CCObject*);
         */
         static CCCallFuncO * actionWithTarget(SelectorProtocol* pSelectorTarget, SEL_CallFuncO selector, CCObject* pObject);
+		static CCCallFuncO* actionWithScriptFuncName(const char* pszFuncName);
         /** initializes the action with the callback 
 
         typedef void (SelectorProtocol::*SEL_CallFuncO)(CCObject*);
