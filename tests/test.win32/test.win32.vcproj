@@ -45,7 +45,7 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USE_MATH_DEFINES;GL_GLEXT_PROTOTYPES"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				DebugInformationFormat="4"
@@ -62,10 +62,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libcocos2d.lib libgles_cm.lib libBox2d.lib libchipmunk.lib libcurl_imp.lib"
+				AdditionalDependencies="libcocos2d.lib libCocosDenshion.lib libBox2d.lib libchipmunk.lib libcurl_imp.lib winmm.lib"
 				OutputFile="$(OutDir)\$(ProjectName).exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;"
+				GenerateManifest="false"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -122,7 +123,7 @@
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="&quot;$(SolutionDir)cocos2dx\platform\third_party\win32&quot;;&quot;$(SolutionDir)cocos2dx\platform&quot;;&quot;$(SolutionDir)cocos2dx&quot;;&quot;$(SolutionDir)cocos2dx\include&quot;;&quot;$(SolutionDir)&quot;;&quot;$(SolutionDir)chipmunk\include\chipmunk&quot;;&quot;$(SolutionDir)CocosDenshion\include&quot;;..\tests;&quot;$(SolutionDir)cocos2dx\platform\third_party\win32\OGLES&quot;;..\;.\"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USE_MATH_DEFINES;GL_GLEXT_PROTOTYPES"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -140,7 +141,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libcocos2d.lib libgles_cm.lib libBox2d.lib libchipmunk.lib libcurl_imp.lib"
+				AdditionalDependencies="libcocos2d.lib libCocosDenshion.lib libBox2d.lib libchipmunk.lib libcurl_imp.lib winmm.lib"
 				OutputFile="$(OutDir)\$(ProjectName).exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;"

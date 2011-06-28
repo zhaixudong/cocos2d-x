@@ -20,7 +20,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName).win32"
 			IntermediateDirectory="$(ConfigurationName).win32"
-			ConfigurationType="2"
+			ConfigurationType="4"
 			CharacterSet="1"
 			>
 			<Tool
@@ -46,7 +46,7 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;COCOS2DXWIN32_EXPORTS;GL_GLEXT_PROTOTYPES"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
@@ -64,23 +64,10 @@
 				CommandLine="if not exist &quot;$(OutDir)&quot; mkdir &quot;$(OutDir)&quot;&#x0D;&#x0A;xcopy /Y /Q &quot;$(SolutionDir)cocos2dx\platform\third_party\win32\libraries\*.*&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="libEGL.lib libgles_cm.lib libxml2.lib libzlib.lib libpng.lib libjpeg.lib libiconv.lib"
-				OutputFile="$(OutDir)\$(ProjectName).dll"
-				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;"
-				IgnoreAllDefaultLibraries="false"
-				IgnoreDefaultLibraryNames=" "
-				GenerateDebugInformation="true"
-				SubSystem="2"
-				ImportLibrary="$(TargetDir)$(TargetName).lib"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -92,9 +79,6 @@
 				Name="VCFxCopTool"
 			/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 				CommandLine=""
 			/>
@@ -103,7 +87,7 @@
 			Name="Release|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName).win32"
 			IntermediateDirectory="$(ConfigurationName).win32"
-			ConfigurationType="2"
+			ConfigurationType="4"
 			CharacterSet="1"
 			>
 			<Tool
@@ -126,7 +110,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="..\platform;..\platform\third_party\win32\iconv;..\platform\third_party\win32\zlib;..\platform\third_party\win32\libpng;..\platform\third_party\win32\libjpeg;..\platform\third_party\win32\libxml2;..\platform\third_party\win32\OGLES;..\include;.."
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;COCOS2DXWIN32_EXPORTS;GL_GLEXT_PROTOTYPES"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="false"
@@ -144,24 +128,10 @@
 				CommandLine="if not exist &quot;$(OutDir)&quot; mkdir &quot;$(OutDir)&quot;&#x0D;&#x0A;xcopy /Y /Q &quot;$(SolutionDir)cocos2dx\platform\third_party\win32\libraries\*.*&quot; &quot;$(OutDir)&quot;&#x0D;&#x0A;"
 			/>
 			<Tool
-				Name="VCLinkerTool"
-				AdditionalDependencies="libEGL.lib libgles_cm.lib libxml2.lib libzlib.lib libpng.lib libjpeg.lib libiconv.lib"
-				OutputFile="$(OutDir)\$(ProjectName).dll"
-				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;$(OutDir)&quot;"
-				IgnoreDefaultLibraryNames=" "
-				GenerateDebugInformation="true"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				ImportLibrary="$(TargetDir)$(TargetName).lib"
-				TargetMachine="1"
+				Name="VCLibrarianTool"
 			/>
 			<Tool
 				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -171,9 +141,6 @@
 			/>
 			<Tool
 				Name="VCFxCopTool"
-			/>
-			<Tool
-				Name="VCAppVerifierTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -1118,6 +1085,26 @@
 		</File>
 		<File
 			RelativePath="..\cocos2d.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\platform\third_party\win32\libraries\libgles_cm.lib"
+			>
+		</File>
+		<File
+			RelativePath="..\platform\third_party\win32\libraries\libjpeg.lib"
+			>
+		</File>
+		<File
+			RelativePath="..\platform\third_party\win32\libraries\libpng.lib"
+			>
+		</File>
+		<File
+			RelativePath="..\platform\third_party\win32\libraries\libxml2.lib"
+			>
+		</File>
+		<File
+			RelativePath="..\platform\third_party\win32\libraries\libzlib.lib"
 			>
 		</File>
 	</Files>
