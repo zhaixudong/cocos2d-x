@@ -1050,7 +1050,7 @@ bool CCSprite::isFrameDisplayed(CCSpriteFrame *pFrame)
 
 CCSpriteFrame* CCSprite::displayedFrame(void)
 {
-	return CCSpriteFrame::frameWithTexture(m_pobTexture, m_obRect);
+	return CCSpriteFrame::frameWithTexture(m_pobTexture, m_obRectInPixels, m_bRectRotated, m_obUnflippedOffsetPositionFromCenter, m_tContentSizeInPixels );
 }
 
 void CCSprite::addAnimation(CCAnimation *pAnimation)
