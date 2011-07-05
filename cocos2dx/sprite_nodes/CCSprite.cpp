@@ -882,7 +882,7 @@ void CCSprite::setFlipX(bool bFlipX)
 	if (m_bFlipX != bFlipX)
 	{
 		m_bFlipX = bFlipX;
-		setTextureRectInPixels(m_obRectInPixels, m_bRectRotated, m_obRectInPixels.size);
+		setTextureRectInPixels(m_obRectInPixels, m_bRectRotated, m_tContentSizeInPixels);
 	}
 }
 
@@ -896,7 +896,7 @@ void CCSprite::setFlipY(bool bFlipY)
 	if (m_bFlipY != bFlipY)
 	{
 		m_bFlipY = bFlipY;
-		setTextureRectInPixels(m_obRectInPixels, m_bRectRotated, m_obRectInPixels.size);
+		setTextureRectInPixels(m_obRectInPixels, m_bRectRotated, m_tContentSizeInPixels);
 	}
 }
 
@@ -1050,7 +1050,7 @@ bool CCSprite::isFrameDisplayed(CCSpriteFrame *pFrame)
 
 CCSpriteFrame* CCSprite::displayedFrame(void)
 {
-	return CCSpriteFrame::frameWithTexture(m_pobTexture, m_obRect);
+	return CCSpriteFrame::frameWithTexture(m_pobTexture, m_obRectInPixels, m_bRectRotated, m_obUnflippedOffsetPositionFromCenter, m_tContentSizeInPixels );
 }
 
 void CCSprite::addAnimation(CCAnimation *pAnimation)
