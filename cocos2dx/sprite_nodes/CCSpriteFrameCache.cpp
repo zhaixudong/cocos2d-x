@@ -237,12 +237,19 @@ void CCSpriteFrameCache::addSpriteFramesWithFile(const char *pszPlist)
 		// stringByDeletingLastPathComponent
 		string textureBase(pszPlist);
 		int indexOfLastSeperator = textureBase.find_last_of('/');
-        if (indexOfLastSeperator == (int)textureBase.length() - 1)
-		{
-			textureBase.erase(indexOfLastSeperator, 1);
-			indexOfLastSeperator = textureBase.find_last_of('/');
-		}
-		textureBase.erase(indexOfLastSeperator);
+        if (indexOfLastSeperator == -1) 
+        {
+            textureBase = "";
+        }
+        else 
+        {
+            if (indexOfLastSeperator == (int)textureBase.length() - 1)
+            {
+                textureBase.erase(indexOfLastSeperator, 1);
+                indexOfLastSeperator = textureBase.find_last_of('/');
+            }
+            textureBase.erase(indexOfLastSeperator);
+        }
 
 		// stringByAppendingPathComponent
         if (! textureBase.empty())
