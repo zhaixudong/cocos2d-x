@@ -2,6 +2,8 @@
 #define __EXPORT_COMMON__
 
 #if defined(_WIN32)
+
+#if FALSE
     #if defined(_EXPORT_DLL_)
     #define EXPORT_DLL     __declspec(dllexport)
     #elif defined(IGNORE_EXPORT)
@@ -9,6 +11,10 @@
     #else 		/* use a DLL library */
     #define EXPORT_DLL     __declspec(dllimport)
     #endif
+#else
+    #define EXPORT_DLL
+#endif
+
 #else
     #if defined(_SHARED_)
     #define EXPORT_DLL     __attribute__((visibility("default")))

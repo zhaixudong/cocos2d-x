@@ -149,12 +149,14 @@ public: inline void set##funName(varType var){ varName = var; }
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 
+#if FALSE
     #undef CC_DLL
     #if defined(_USRDLL)
         #define CC_DLL     __declspec(dllexport)
     #else 		/* use a DLL library */
         #define CC_DLL     __declspec(dllimport)
     #endif
+#endif
 
 #endif  // CC_PLATFORM_WIN32
 

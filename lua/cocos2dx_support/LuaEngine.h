@@ -31,10 +31,14 @@ THE SOFTWARE.
 
 #undef LUA_DLL
 
+#if FALSE
 #if defined(_USRDLL)
     #define LUA_DLL     __declspec(dllexport)
 #else 		/* use a DLL library */
     #define LUA_DLL     __declspec(dllimport)
+#endif
+#else
+#define LUA_DLL
 #endif
 
 #else
