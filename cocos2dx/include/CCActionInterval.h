@@ -89,7 +89,7 @@ protected:
 class CC_DLL CCSequence : public CCActionInterval
 {
 public:
-	~CCSequence(void);
+	virtual ~CCSequence(void);
 
 	/** initializes the action */
     bool initOneTwo(CCFiniteTimeAction *pActionOne, CCFiniteTimeAction *pActionTwo);
@@ -120,7 +120,7 @@ protected:
 class CC_DLL CCRepeat : public CCActionInterval
 {
 public:
-	~CCRepeat(void);
+	virtual ~CCRepeat(void);
 
 	/** initializes a CCRepeat action. Times is an unsigned integer between 1 and pow(2,30) */
 	bool initWithAction(CCFiniteTimeAction *pAction, unsigned int times);
@@ -207,7 +207,7 @@ protected:
 class CC_DLL CCSpawn : public CCActionInterval
 {
 public:
-	~CCSpawn(void);
+	virtual ~CCSpawn(void);
 
 	/** initializes the Spawn action with the 2 actions to spawn */
 	bool initOneTwo(CCFiniteTimeAction *pAction1, CCFiniteTimeAction *pAction2);
@@ -640,7 +640,7 @@ public:
 class CC_DLL CCReverseTime : public CCActionInterval
 {
 public:
-	~CCReverseTime(void);
+	virtual ~CCReverseTime(void);
 	CCReverseTime();
 
 	/** initializes the action */
@@ -665,7 +665,7 @@ class CCTexture2D;
 class CC_DLL CCAnimate : public CCActionInterval
 {
 public:
-	~CCAnimate(void);
+	virtual ~CCAnimate(void);
 
 	/** Get animation used for the animate */
 	inline CCAnimation* getAnimation(void) { return m_pAnimation; }

@@ -88,7 +88,7 @@ public:
 class CCTargetedTouchHandler : public CCTouchHandler
 {
 public:
-    ~CCTargetedTouchHandler(void);
+    virtual ~CCTargetedTouchHandler(void);
 
     /** whether or not the touches are swallowed */
 	bool isSwallowsTouches(void);

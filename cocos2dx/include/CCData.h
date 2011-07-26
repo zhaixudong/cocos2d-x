@@ -34,7 +34,7 @@ class CCData : public CCObject
 {
 public:
 	CCData(void);
-	~CCData(void);
+	virtual ~CCData(void);
 	
 	void* bytes(void);
 

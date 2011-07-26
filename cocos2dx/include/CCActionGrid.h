@@ -123,7 +123,7 @@ namespace cocos2d
 	class CC_DLL CCAccelAmplitude : public CCActionInterval
 	{
 	public:
-		~CCAccelAmplitude(void);
+		virtual ~CCAccelAmplitude(void);
 		/** initializes the action with an inner action that has the amplitude property, and a duration time */
 		bool initWithAction(CCAction *pAction, ccTime duration);
 
@@ -149,7 +149,7 @@ namespace cocos2d
 	class CC_DLL CCDeccelAmplitude : public CCActionInterval
 	{
 	public:
-		~CCDeccelAmplitude(void);
+		virtual ~CCDeccelAmplitude(void);
 		/** initializes the action with an inner action that has the amplitude property, and a duration time */
 		bool initWithAction(CCAction *pAction, ccTime duration);
 

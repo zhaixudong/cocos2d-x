@@ -56,7 +56,7 @@ typedef enum {
 class CC_DLL CCProgressTimer : public CCNode
 {
 public:
-	~CCProgressTimer(void);
+	virtual ~CCProgressTimer(void);
 
 	/**	Change the percentage to change progress. */
 	inline CCProgressTimerType getType(void) { return m_eType; }

@@ -101,7 +101,7 @@ The 'custom selectors' should be avoided when possible. It is faster, and consum
 class CC_DLL CCScheduler : public CCObject
 {
 public:
-    ~CCScheduler(void);
+    virtual ~CCScheduler(void);
 	
 	inline ccTime getTimeScale(void) { return m_fTimeScale; }
 	/** Modifies the time of all scheduled callbacks.

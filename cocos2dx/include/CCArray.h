@@ -55,7 +55,7 @@ namespace cocos2d
 class CC_DLL CCArray : public CCObject
 {
 public:
-    ~CCArray();
+    virtual ~CCArray();
     static CCArray* array();
     static CCArray* arrayWithCapacity(unsigned int capacity);
     static CCArray* arrayWithArray(CCArray* otherArray);

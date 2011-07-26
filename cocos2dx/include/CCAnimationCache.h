@@ -45,7 +45,7 @@ namespace cocos2d
 	class CC_DLL CCAnimationCache : public CCObject
 	{
 	public:
-		~CCAnimationCache();
+		virtual ~CCAnimationCache();
 		CCAnimationCache();
 
 		/** Retruns ths shared instance of the Animation cache */

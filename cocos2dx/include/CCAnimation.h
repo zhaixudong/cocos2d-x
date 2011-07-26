@@ -74,7 +74,7 @@ namespace   cocos2d {
 		}
 
 	public:
-		~CCAnimation(void);
+		virtual ~CCAnimation(void);
 
 		/** Initializes a CCAnimation with frames.
 		@since v0.99.5
