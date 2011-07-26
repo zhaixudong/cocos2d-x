@@ -93,7 +93,7 @@ struct _ccCArray;
 class CC_DLL CCTouchDispatcher : public CCObject, public EGLTouchDelegate
 {
 public:
-	~CCTouchDispatcher();
+	virtual ~CCTouchDispatcher();
 	bool init(void);
 	CCTouchDispatcher() 
         : m_pTargetedHandlers(NULL)

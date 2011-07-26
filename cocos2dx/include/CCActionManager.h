@@ -51,7 +51,7 @@ class CC_DLL CCActionManager : public CCObject, public SelectorProtocol
 {
 public:
 	CCActionManager(void);
-	~CCActionManager(void);
+	virtual ~CCActionManager(void);
 	bool init(void);
 
     // actions

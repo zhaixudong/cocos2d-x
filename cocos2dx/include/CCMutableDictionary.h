@@ -54,7 +54,7 @@ public:
 		m_bBegin = false;
 	}
 
-	~CCMutableDictionary(void)
+	virtual ~CCMutableDictionary(void)
 	{
 		removeAllObjects();
 	}

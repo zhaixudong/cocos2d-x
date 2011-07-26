@@ -79,7 +79,7 @@ namespace cocos2d
 	class CC_DLL CCShuffleTiles : public CCTiledGrid3DAction
 	{
 	public:
-		~CCShuffleTiles(void);
+		virtual ~CCShuffleTiles(void);
 		/** initializes the action with a random seed, the grid size and the duration */
 		bool initWithSeed(int s, ccGridSize gridSize, ccTime duration);
 		void shuffle(int *pArray, unsigned int nLen);
@@ -164,7 +164,7 @@ namespace cocos2d
 	class CC_DLL CCTurnOffTiles : public CCTiledGrid3DAction
 	{
 	public:
-		~CCTurnOffTiles(void);
+		virtual ~CCTurnOffTiles(void);
 		/** initializes the action with a random seed, the grid size and the duration */
 		bool initWithSeed(int s, ccGridSize gridSize, ccTime duration);
 		void shuffle(int *pArray, unsigned int nLen);

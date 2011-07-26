@@ -51,7 +51,7 @@ class CC_DLL CCSpriteFrameCache : public CCObject
 {
 public:
 	bool init(void);
-	~CCSpriteFrameCache(void);
+	virtual ~CCSpriteFrameCache(void);
 
 	/*Adds multiple Sprite Frames with a dictionary. The texture will be associated with the created sprite frames.
 	 */

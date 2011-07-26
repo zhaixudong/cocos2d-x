@@ -46,7 +46,7 @@ public:
 	std::string *  m_pData;
 public:
 	CCAsyncObject();
-	~CCAsyncObject()
+	virtual ~CCAsyncObject()
 	{
 		CCLOGINFO("cocos2d: deallocing CCAsyncObject.");
 		CC_SAFE_DELETE(m_pTarget);

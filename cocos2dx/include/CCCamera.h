@@ -71,7 +71,7 @@ namespace   cocos2d {
 		bool m_bDirty;
 	public:
 		CCCamera(void);
-		~CCCamera(void);
+		virtual ~CCCamera(void);
 
 		void init(void);
 

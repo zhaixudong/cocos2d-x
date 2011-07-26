@@ -84,7 +84,7 @@ namespace cocos2d {
             , m_fRadX(0.0)						
 			, m_fRadDeltaX(0.0)		
 		{}
-		~CCOrbitCamera(){}
+		virtual ~CCOrbitCamera(){}
 		/** creates a CCOrbitCamera action with radius, delta-radius,  z, deltaZ, x, deltaX */
 		static CCOrbitCamera * actionWithDuration(float t, float radius, float deltaRadius, float angleZ, float deltaAngleZ, float angleX, float deltaAngleX);
 		/** initializes a CCOrbitCamera action with radius, delta-radius,  z, deltaZ, x, deltaX */

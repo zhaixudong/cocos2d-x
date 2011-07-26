@@ -97,7 +97,7 @@ namespace cocos2d
 	class CCGrid3D : public CCGridBase
 	{
 	public:
-        ~CCGrid3D(void);
+        virtual ~CCGrid3D(void);
 
 		/** returns the vertex at a given position */
 		ccVertex3F vertex(ccGridSize pos);
@@ -128,7 +128,7 @@ namespace cocos2d
 	class CCTiledGrid3D : public CCGridBase
 	{
 	public:
-		~CCTiledGrid3D(void);
+		virtual ~CCTiledGrid3D(void);
 
 		/** returns the tile at the given position */
 		ccQuad3 tile(ccGridSize pos);

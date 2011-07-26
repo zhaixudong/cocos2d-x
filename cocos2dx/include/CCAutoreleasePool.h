@@ -33,7 +33,7 @@ class CC_DLL CCAutoreleasePool : public CCObject
 	CCMutableArray<CCObject*>*	m_pManagedObjectArray;	
 public:
 	CCAutoreleasePool(void);
-	~CCAutoreleasePool(void);
+	virtual ~CCAutoreleasePool(void);
 
 	void addObject(CCObject *pObject);
 	void removeObject(CCObject *pObject);
@@ -49,7 +49,7 @@ class CC_DLL CCPoolManager
 	CCAutoreleasePool* getCurReleasePool();
 public:
 	CCPoolManager();
-	~CCPoolManager();
+	virtual ~CCPoolManager();
 	void finalize();
 	void push();
 	void pop();

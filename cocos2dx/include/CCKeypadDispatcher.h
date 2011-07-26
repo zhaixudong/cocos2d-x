@@ -45,7 +45,7 @@ class CC_DLL CCKeypadDispatcher : public CCObject
 {
 public:
     CCKeypadDispatcher();
-    ~CCKeypadDispatcher();
+    virtual ~CCKeypadDispatcher();
 
     /**
     @brief Returns the shared CCKeypadDispatcher object for the system.

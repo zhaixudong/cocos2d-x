@@ -85,7 +85,7 @@ public:
 	}
 
 public:
-	~CCSpriteFrame(void);
+	virtual ~CCSpriteFrame(void);
 	virtual CCObject* copyWithZone(CCZone *pZone);
 
 	/** Create a CCSpriteFrame with a texture, rect in points.

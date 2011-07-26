@@ -42,7 +42,7 @@ namespace cocos2d
 	class CC_DLL CCProfiler : public CCObject
 	{
 	public:
-		~CCProfiler(void);
+		virtual ~CCProfiler(void);
 		void displayTimers(void);
 		bool init(void);
 
@@ -59,7 +59,7 @@ namespace cocos2d
 	{
 	public:
 		bool initWithName(const char* pszTimerName, CCObject *pInstance);
-		~CCProfilingTimer(void);
+		virtual ~CCProfilingTimer(void);
 		char* description(void);
 		inline struct cc_timeval * getStartTime(void) { return &m_sStartTime; };
 		inline void setAverageTime(double value) { m_dAverageTime = value; }
